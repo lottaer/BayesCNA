@@ -4,7 +4,7 @@ This repository contains the code used for the analysis in _Sensitive detection 
 
 The workflow is presented in `analysis.R`
 
-For further details, see the manuscipt [TBA]
+For further details, see the our preprint https://www.biorxiv.org/content/10.1101/2025.09.22.677749v1
 
 ## Details on data simulation
 
