@@ -12,18 +12,19 @@ BayesCNA can be run on any user supplied data. However, a key assumption of the 
 
 ```
 # load required packages
-library(ggplot2)    # version 3.5.1
-library(magrittr)   # version 2.0.3
-library(bcp)        # version 4.0.3
-library(pracma)     # version 2.4.4
+library(ggplot2)    
+library(magrittr)   
+library(bcp)       
+library(pracma)    
 
 # load BayesCNA functions
-source("../segmentation.R")
+source("segmentation.R")
 
 observed.CNAs <- readRDS("path/to/yout/data") # observed (noisy) copy number profile
+results <- run.BayesCNA(observed.CNAs, p = 0.01, eps = 0.05, eta = 0.05, n.mcmc = 2000, n.burnin = 500)
 ```
 
-We have included a simple example of how to run BayesCNA, which can be found in the `Examples`-folder. 
+We have also included a simple example of how to run BayesCNA, which can be found in the `Examples`-folder. 
 
 ## Details on data simulation
 
