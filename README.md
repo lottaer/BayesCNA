@@ -4,7 +4,26 @@ This repository contains the code used for the analysis in _Sensitive detection 
 
 The workflow is presented in `analysis.R`
 
-For further details, see the manuscipt [TBA]
+For further details, see our preprint: https://www.biorxiv.org/content/10.1101/2025.09.22.677749v1
+
+## BayesCNA on custom data
+
+BayesCNA can be run on any user supplied data. However, a key assumption of the Bayesian changepoint detection is that the noise is Gaussian with constant variance across the genome. We suggest that the input data is GC and mappability corrected, and normalized. BayesCNA can be run on user-supplied data in the following way:
+
+```
+# load required packages
+library(ggplot2)    # version 3.5.1
+library(magrittr)   # version 2.0.3
+library(bcp)        # version 4.0.3
+library(pracma)     # version 2.4.4
+
+# load BayesCNA functions
+source("../segmentation.R")
+
+observed.CNAs <- readRDS("path/to/yout/data") # observed (noisy) copy number profile
+```
+
+We have included a simple example of how to run BayesCNA, which can be found in the `Examples`-folder. 
 
 ## Details on data simulation
 
