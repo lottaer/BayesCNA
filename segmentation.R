@@ -48,7 +48,7 @@ get.profile <- \(segment.df) {
 
 ##### ------ Segmentation ------------------------------------------------------
 
-find.peaks <- \(U, eps = 0.1, min.bins = 5) {
+find.peaks <- \(U, eps = 0.1, min.bins = 7) {
   probs <- colSums(U) / nrow(U)
   probs.normalized <- (probs - min(probs)) / (max(probs) - min(probs)) 
   probs.normalized[probs.normalized < eps] <- 0
@@ -77,7 +77,7 @@ remove.small.segments <- \(cn.profile, n.sd = 0.5) {
   reconstructed.func
 }
 
-bcp.pp.sd <- \(sample, bcp.results, eps = 0.05, n.sd = 0.5) {
+bcp.pp.sd <- \(sample, bcp.results, eps = 0.05, n.sd = 0.05) {
   burnin <- bcp.results$burnin
   U <- bcp.results$mcmc.rhos %>% t
   U %<>% {.[(burnin + 1):nrow(.), ]} 
@@ -90,3 +90,12 @@ bcp.pp.sd <- \(sample, bcp.results, eps = 0.05, n.sd = 0.5) {
   which(get.breakpoints(pp.profile.cleaned))
 }
 
+##### ------ BayesCNA ----------------------------------------------------------
+
+run.BayesCNA <- 
+  \(data, p = 0.01, eps = 0.05, eta = 0.05, n.mcmc = 2000, n.burnin = 500) {
+  denoised <- bcp(data, p0 = p, burnin = n.burnin, mcmc = n.mcmc, return.mcmc = T)
+  postprocessed <- bcp.pp.sd(denoised$data[, 2], denoised, eps = eps, n.sd = eta)
+  profile <- construct.profile(data, postprocessed, genome.length = length(data))
+  list(partition = postprocessed, profile = profile)
+}
