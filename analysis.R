@@ -439,3 +439,21 @@ ggplot(results.combined,
   geom_point(position = position_jitterdodge(), alpha = 0.3)  +
   xlim(c(1,23)) +
   labs(x = "Purity")
+
+# Run-time experiments --------------------------------------------------------
+
+## Run evaluation loop ---------------------------------------------------------
+
+times <- numeric(nrow(exp.data))
+
+for (i in 1:length(times)) {
+  bt <- Sys.time()
+  data <- as.numeric(exp.data[i, ])
+  run.BayesCNA(data)
+  et <- Sys.time()
+  times[i] <- et - bt
+}
+
+cat("Time elapsed: ", mean(times), "+-", sd(times))
+
+
