@@ -1,13 +1,7 @@
 ---
-title: "BayesCNA minimal example"
-output:
-  html_document:
-    df_print: paged
-    highlight: pygments
-    theme: readable
+title: "BayesCNA example"
+output: github_document
 ---
-
-# BayesCNA
 
 In this script, we give an example output of BayesCNA so that the user can validate that the program is running as it should. For more details of the method, we refer the reader to our preprint: <https://www.biorxiv.org/content/10.1101/2025.09.22.677749v1>
 
@@ -59,11 +53,11 @@ plot.simulated.data <- \(dataset) {
 plot.simulated.data(example.data)
 ```
 
-BayesCNA works with *any user provided binned genomic data*. However, a key assumption of the BCP model is constant Gaussian noise so it is recommended to process the data (e.g correct for GC and mappability bias) to not violate this assumption. To run BayesCNA on user provided data from this script, exchange the variable observed.CNAs to contain your data.
+BayesCNA works with *any user provided binned genomic data*. However, a key assumption of the BCP model is constant Gaussian noise so it is recommended to process the data (e.g correct for GC and mappability bias) to not violate this assumption. To run BayesCNA on user provided data from this script, exchange the variable observed.CNAs to contain your data. The provided data should be a numeric vector.
 
 ## Running BayesCNA
 
-The key parameter of the Bayesian changepoint detection (BCP) model is the parameter $p_0$, that is the prior on changepoint probabilities. A small $p_0$ is suggested if we know a priori that that the sample is of high coverage and/or purity, as this generally increases the precision, and a larger $p_0$ is suggested if the sample is of low coverage and/or purity, i.e. is noisy. We choose 500 burnin iterations and 2000 Markov Chain Monte Carlo (MCMC) samples. The burnin samples are not used for estimating the posterior changepoint probabilities.
+The key parameter of the Bayesian changepoint detection (BCP) model is the parameter $p_0$, that is the prior on changepoint probabilities. A small $p_0$ is suggested if we know a priori that that the sample is of high coverage and/or purity, as this generally increases the precision, and a larger $p_0$ is suggested if the sample is of low coverage and/or purity, i.e. is noisy. The default value for BCP is $p_0 = 0.2$, which in general is too large for copy number data from liquid biopsies. Using $p_0 = 0.05$ can be favorable in poor quality cases, and for cases with higher coverage/purity, we suggest using $p_0 = 0.01$. We choose 500 burnin iterations and 2000 Markov Chain Monte Carlo (MCMC) samples. The burnin samples are not used for estimating the posterior changepoint probabilities.
 
 ```{r}
 # BCP specific parameters
