@@ -83,7 +83,8 @@ plot(denoised)
 The next step is to identify a likely partition of the genome based on the posterior changepoint probabilities. Important parameters for the post-processing are $\varepsilon$ (percentage of the highest peak), that governs how much noise will be removed from posterior changepoint probabilities and $\eta$, that governs how much merging of segments will be performed.
 
 ```{r}
-eps <- 0.1; eta <- 0.5
+eps <- 0.1
+eta <- 0.5
 denoised.postprocessed <- bcp.pp.sd(denoised$data[, 2], denoised, eps = eps, n.sd = eta) 
 cat("Identified breakpoints: ", denoised.postprocessed)
 ```
