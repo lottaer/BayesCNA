@@ -21,7 +21,7 @@ library(pracma)
 source("segmentation.R")
 
 observed.CNAs <- readRDS("path/to/yout/data") # observed (noisy) copy number profile
-results <- run.BayesCNA(observed.CNAs, p = 0.01, eps = 0.05, eta = 0.05, n.mcmc = 2000, n.burnin = 500)
+results <- run.BayesCNA(observed.CNAs, p = 0.01, eps = 0.05, eta = 0.5, n.mcmc = 2000, n.burnin = 500)
 ```
 
 We have also included a simple example of how to run BayesCNA, which can be found in the `Examples`-folder. 
