@@ -127,6 +127,17 @@ plot(denoised)
 
 ![](BayesCNA_example_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
+To gain an insight into the uncertainty associated the mean, we compute
+a 95% CI based on the obtained MCMC partitions. The estimated (binwise)
+mean is indicated in solid red. The input data is represented with gray
+scatterpoints. A wider interval indicates higher uncertainty.
+
+``` r
+plot.CI(denoised) 
+```
+
+![](BayesCNA_example_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
 The next step is to identify a likely partition of the genome based on
 the posterior changepoint probabilities. Important parameters for the
 post-processing are $\varepsilon$ (percentage of the highest peak), that
@@ -141,13 +152,13 @@ denoised.postprocessed <- bcp.pp.sd(denoised$data[, 2], denoised, eps = eps, n.s
 cat("Identified breakpoints: ", denoised.postprocessed)
 ```
 
-    ## Identified breakpoints:  55 141 188 231 281 335 433 482 527 574 614 715 764 874 894 928 982
+    ## Identified breakpoints:  54 142 188 231 281 335 432 482 527 574 614 715 764 874 894 928 982
 
 ``` r
 plot.simulated.data(example.data) + geom_vline(xintercept = denoised.postprocessed, color = "black", linetype = "dashed")
 ```
 
-![](BayesCNA_example_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](BayesCNA_example_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 From the identified breakpoints, we construct the copy number profile by
 computing the median of the data, conditioned on the obtained partition:

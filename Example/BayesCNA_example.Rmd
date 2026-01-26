@@ -74,6 +74,12 @@ Below is the posterior means and changepoints probabilities, provided by the BCP
 plot(denoised)
 ```
 
+To gain an insight into the uncertainty associated the mean, we compute a 95% CI based on the obtained MCMC partitions. The estimated (binwise) mean is indicated in solid red. The input data is represented with gray scatterpoints. A wider interval indicates higher uncertainty.
+
+```{r}
+plot.CI(denoised) 
+```
+
 The next step is to identify a likely partition of the genome based on the posterior changepoint probabilities. Important parameters for the post-processing are $\varepsilon$ (percentage of the highest peak), that governs how much noise will be removed from posterior changepoint probabilities and $\eta$, that governs how much merging of segments will be performed.
 
 ```{r}

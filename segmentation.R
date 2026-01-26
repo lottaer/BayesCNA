@@ -48,7 +48,7 @@ get.profile <- \(segment.df) {
 
 ##### ------ Segmentation ------------------------------------------------------
 
-find.peaks <- \(U, eps = 0.1, min.bins = 7) {
+find.peaks <- \(U, eps = 0.1, min.bins = 10) {
   probs <- colSums(U) / nrow(U)
   probs.normalized <- (probs - min(probs)) / (max(probs) - min(probs)) 
   probs.normalized[probs.normalized < eps] <- 0
@@ -99,3 +99,31 @@ run.BayesCNA <-
   profile <- construct.profile(data, postprocessed, genome.length = length(data))
   list(partition = postprocessed, profile = profile)
 }
+
+compute.CI <- \(denoised) {
+  burnin <- denoised$burnin # number of burnin iterations
+  iters <- denoised$mcmc # number of mcmc iterations
+  means <- denoised$mcmc.means[1:iters + burnin, ] %>% t # remove burnin iterations
+  summary <- apply(means, 1, \(r) {
+    q <- quantile(r, probs = c(0.025, 0.975))
+    data.frame(
+      ymin = q[1], 
+      ymax = q[2],
+      cn = mean(r)
+    )
+  }, simplify = F) %>% do.call(rbind, .)
+  summary$bin <- 1:nrow(means)
+  summary
+}
+
+# plot the posterior mean and 95% CI of the mean
+plot.CI <- \(denoised) {
+  summary <- compute.CI(denoised)
+  data <- denoised$data[, 2] # the input data
+  CNA.df <- data.frame(bin = 1:length(data), cn = data)
+  ggplot(summary, aes(x = bin, y = cn)) + 
+    geom_point(data = CNA.df, aes(x = bin, y = cn), color = "lightgray") +
+    geom_line(color = "firebrick") + 
+    geom_ribbon(data = summary, mapping = aes(ymin = ymin, ymax = ymax), fill = "firebrick", alpha = 0.4) 
+}
+
